@@ -86,5 +86,5 @@ The game board is stored as a 6x7 2D array. When a user clicks:
 
 ## Author
 
-**MahitP**
+Mahit Pulavarthi — [github.com/MahitP](https://github.com/MahitP)
 
