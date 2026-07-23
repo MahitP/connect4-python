@@ -81,3 +81,10 @@ The game board is stored as a 6x7 2D array. When a user clicks:
 - **Matrix Algorithms:** Efficiently traversing a 2D array to detect multi-directional geometric patterns (win conditions).
 - **State Management:** Maintaining a strict separation between internal application state (the 2D grid array) and the visual UI state (falling piece coordinates).
 - **Event-Driven Architecture:** Utilizing non-blocking timer loops to handle physics-like animations in a single-threaded environment.
+
+---
+
+## Author
+
+**MahitP**
+
