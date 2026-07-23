@@ -1,57 +1,83 @@
 # Connect4 Python
 
-A complete, interactive Connect 4 game built with Python. This project demonstrates programmatic game logic, 2D grid state management, and event-driven UI updates using `cmu_graphics`.
+An interactive 2D Connect 4 game built in Python. The project focuses on programmatic state management, 2D array matrix traversal algorithms, and dynamic UI rendering using the `cmu_graphics` library.
 
-## Features
+---
 
-- **Interactive UI:** A fully playable graphical interface with smooth piece-dropping animations and hover states.
-- **State Management:** Maintains a 6x7 grid representation of the board to track player moves.
-- **Win Detection Algorithms:** Calculates win conditions (vertical, horizontal, diagonal) programmatically after every move.
-- **Game Loops & State Resets:** Handles title screens, game-over states, and resets cleanly without restarting the application.
+## 🚀 Overview
 
-## Technologies Used
+The application provides a complete, playable Connect 4 interface. It internally tracks the game state on a 6x7 grid, handles alternating player turns, animates pieces falling into place, and programmatically evaluates the board matrix for win conditions after every move.
 
-- **Python 3.11+**
-- **cmu_graphics:** Used for rendering 2D shapes, handling mouse events, and managing the application step loop.
-- **uv / pyproject.toml:** Modern Python dependency management.
+---
 
-## Installation
+## ✨ Features
 
-This project manages dependencies using `uv` or standard `pip`.
+- Interactive graphical interface with dynamic piece-dropping animations and column hover states.
+- Internal 2D array state management that dictates UI rendering.
+- Matrix-based win detection algorithms covering horizontal, vertical, and both diagonal axes.
+- Comprehensive game loop handling title screens, player switching, draw conditions, and state resets.
+
+---
+
+## 🛠️ Technical Implementation
+
+The core architectural approach separates the visual representation from the underlying data structure. 
+
+The game board is stored as a 6x7 2D array. When a user clicks:
+1. The X-coordinate of the mouse is mathematically converted into a column index.
+2. The logic scans that column from the bottom row up to find the lowest available empty slot.
+3. An animation state is triggered. The UI loop (`onStep`) updates the Y-coordinate of a dropping piece over multiple frames until it reaches the calculated target row, ensuring the main thread is not blocked by a `while` loop.
+4. Once the piece lands, the matrix is updated, and a sequence of four algorithmic checks traverses the 2D array to determine if a win condition has been met.
+
+---
+
+## 🧠 Design Decisions & Challenges
+
+- **Event-Driven Animations:** A major challenge was animating the dropping pieces without freezing the application. Standard `time.sleep()` loops block the UI thread. Instead, an event-driven approach was used. The falling logic relies on an `onStep` timer function that increments a `fallingRow` variable incrementally across frames, creating smooth animation while keeping the application responsive to user input.
+- **Matrix Traversal:** Win detection required careful index boundary management. Rather than hardcoding checks for every cell, the logic uses bounded `for` loops (e.g., `range(rows - 3)`) to prevent `IndexError` exceptions while efficiently scanning the grid for 4-in-a-row matches.
+
+---
+
+## 📁 Project Structure
+
+```
+├── connect4.py          # Main application file containing state management and rendering logic
+├── requirements.txt     # Project dependencies
+└── pyproject.toml       # Project metadata
+```
+
+---
+
+## ▶️ Running the Project
+
+**Requirements:** Python 3.11+
 
 1. Clone the repository and navigate to the project directory:
    ```bash
    cd connect4-python
    ```
-
-2. Install dependencies via pip:
+2. Create a virtual environment and install dependencies:
    ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
    pip install -r requirements.txt
    ```
-   *Alternatively, if using `uv`:*
+3. Run the application:
    ```bash
-   uv sync
+   python3 connect4.py
    ```
 
-## Usage
+---
 
-Run the game script from your terminal:
+## 🔮 Future Improvements
 
-```bash
-python connect4.py
-```
-*If using `uv`: `uv run connect4.py`*
+- Abstracting the game state matrix and win-detection algorithms into a dedicated `Board` class for better object-oriented design.
+- Implementing a minimax algorithm with alpha-beta pruning for a single-player AI mode.
 
-## Technical Details
+---
 
-The core challenge in this project was managing the separation between the underlying board data structure and the visual representation. 
+## ⭐ Technical Highlights
 
-The game board is represented internally as a 2D array (`holes`), where each index maps to a specific column and row. When a player drops a piece:
-1. The column index is calculated from the mouse's X-coordinate.
-2. The logic determines the lowest available row in that column.
-3. An animation state (`fallingPiece`) updates the UI over multiple frames until it reaches the target row.
-4. Once landed, a sequence of four algorithmic checks (horizontal, vertical, diagonal-up, diagonal-down) evaluates the board to determine if a win condition has been met.
-
-## Author
-
-Mahit
+- **Matrix Algorithms:** Efficiently traversing a 2D array to detect multi-directional geometric patterns (win conditions).
+- **State Management:** Maintaining a strict separation between internal application state (the 2D grid array) and the visual UI state (falling piece coordinates).
+- **Event-Driven Architecture:** Utilizing non-blocking timer loops to handle physics-like animations in a single-threaded environment.
